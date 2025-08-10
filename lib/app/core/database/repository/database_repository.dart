@@ -35,7 +35,14 @@ abstract class DatabaseRepository {
     required String where,
     required List<Object?> whereArgs,
   }) async {
-    return await (await db).update(table, data, where: where, whereArgs: whereArgs);
+    try {
+      var t = await (await db).update(table, data, where: where, whereArgs: whereArgs);
+      print('\x1B[32mt -------------------- ${t}\x1B[0m');
+      return t;
+    } catch (e) {
+      print('\x1B[32me -------------------- ${e}\x1B[0m');
+      return 0; // Return 0 if update fails
+    }
   }
 
   Future<int> delete({required String table, required String where, required List<Object?> whereArgs}) async {

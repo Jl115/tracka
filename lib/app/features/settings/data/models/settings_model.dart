@@ -6,14 +6,16 @@ class SettingsModel extends SettingsEntity {
     required super.username,
     required super.password,
     required super.themeModeName,
+    required super.loggedIn,
   });
 
   factory SettingsModel.fromJson(Map<String, dynamic> json) {
     return SettingsModel(
-      darkMode: json['darkMode'] ?? false,
+      darkMode: json['dark_mode'] == 1,
       username: json['username'] ?? '',
-      password: json['password'] ?? '',
-      themeModeName: json['themeModeName'] ?? 'light',
+      password: json['password_hash'] ?? '',
+      themeModeName: json['dark_mode'] == 1 ? 'dark' : 'light',
+      loggedIn: json['logged_in'] == 1,
     );
   }
 
@@ -23,7 +25,18 @@ class SettingsModel extends SettingsEntity {
 
   @override
   String toString() {
-    return 'SettingsModel{darkMode: $darkMode, username: $username, password: $password, themeModeName: $themeModeName}';
+    return 'SettingsModel{darkMode: $darkMode, username: $username, password: $password, themeModeName: $themeModeName}, loggedIn: $loggedIn}';
+  }
+
+  @override
+  copyWith({bool? darkMode, String? username, String? password, String? themeModeName, bool? loggedIn}) {
+    return SettingsModel(
+      darkMode: darkMode ?? this.darkMode,
+      username: username ?? this.username,
+      password: password ?? this.password,
+      themeModeName: themeModeName ?? this.themeModeName,
+      loggedIn: loggedIn ?? this.loggedIn,
+    );
   }
 
   Map<String, dynamic> toDatabaseModel() {

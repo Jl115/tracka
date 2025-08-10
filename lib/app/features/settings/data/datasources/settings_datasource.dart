@@ -12,13 +12,6 @@ class SettingsDataSource {
   }
 
   Future<void> save(SettingsModel model) async {
-    final userId = await _databaseController.getCurrentUserId();
-
-    await _databaseController.update(
-      table: 'setting',
-      data: model.toDatabaseModel(),
-      where: 'user_id',
-      whereArgs: [userId],
-    );
+    await _databaseController.saveSettings(model);
   }
 }

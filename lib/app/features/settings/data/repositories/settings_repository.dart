@@ -20,6 +20,7 @@ class SettingsRepository {
       username: settings.username,
       password: settings.password,
       themeModeName: settings.themeModeName,
+      loggedIn: settings.loggedIn,
     ),
   );
 }

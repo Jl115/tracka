@@ -25,6 +25,7 @@ class DatabaseMigrationService {
       'id': newUserId,
       'username': 'user',
       'password_hash': '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb',
+      'logged_in': 1,
       'created_at': nowEpoch,
       'updated_at': nowEpoch,
     });

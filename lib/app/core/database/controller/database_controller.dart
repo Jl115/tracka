@@ -1,6 +1,8 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:tracka/app/core/database/repository/database_repository.dart';
 import 'package:tracka/app/core/database/service/database_service.dart';
+import 'package:tracka/app/features/settings/data/models/settings_model.dart';
+import 'package:tracka/app/features/settings/domain/entities/settings_entity.dart';
 
 class DatabaseController extends DatabaseRepository {
   static final DatabaseController _instance = DatabaseController._internal();
@@ -16,8 +18,16 @@ class DatabaseController extends DatabaseRepository {
     await updateValue('setting', 'dark_mode', darkModeValue, 'user_id', userId);
   }
 
-  Future<void> saveSettings(Map<String, dynamic> settings) async {
+  Future<void> saveSettings(SettingsModel settings) async {
     final db = await _dbService.database;
+    final userId = await getCurrentUserId();
+    await db.update(
+      'setting',
+      {'dark_mode': settings.darkMode ? 1 : 0},
+      where: 'user_id = ?',
+      whereArgs: [userId],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<Map<String, dynamic>> getValue(String key) async {

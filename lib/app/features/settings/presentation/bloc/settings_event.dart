@@ -16,7 +16,6 @@ class UpdateUsernameEvent extends SettingsEvent {
 }
 
 class UpdateThemeModeEvent extends SettingsEvent {
-  final String themeModeName; // "light" or "dark"
+  final String themeModeName;
   const UpdateThemeModeEvent(this.themeModeName);
 }
-
