@@ -1,0 +1,44 @@
+import 'package:tracka/app/core/utils/hasher.dart';
+import 'package:uuid/uuid.dart';
+
+class AuthEntity {
+  String username;
+  String password;
+
+  Hasher hasher = Hasher.instance;
+  Uuid uuid = Uuid();
+
+  AuthEntity({required this.username, required this.password}) {
+    if (username.isEmpty || password.isEmpty) {
+      throw ArgumentError('Username and password cannot be empty');
+    }
+    //* Add Password hashing
+    if (password.length < 6) {
+      throw ArgumentError('Password must be at least 6 characters long');
+    }
+
+    password = hasher.hashPassword(password);
+    username = username;
+  }
+
+  @override
+  String toString() {
+    return 'AuthEntity(username: $username, password: $password)';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'username': username, 'password': password};
+  }
+
+  Map<String, dynamic> toDatabaseJson() {
+    String id = uuid.v4(); // Generate a unique ID for the user
+    print('\x1B[32mid -------------------- ${id}\x1B[0m');
+    return {
+      'id': id,
+      'username': username,
+      'password_hash': password,
+      'created_at': DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toIso8601String(),
+    };
+  }
+}

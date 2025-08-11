@@ -23,7 +23,7 @@ class DatabaseService {
     final path = p.join(dbPath, 'tracka.db');
 
     // reset db
-    // await deleteDatabase(path);
+    await deleteDatabase(path);
     print('\x1B[32m dbPath :D -------------------- ${path}\x1B[0m');
     return await openDatabase(path, version: 1, onCreate: _createDb);
   }
@@ -35,5 +35,7 @@ class DatabaseService {
     // Migrate
     // Seed
     await migrationService.seedDatabase();
+    //Triggers
+    await migrationService.createTriggers();
   }
 }

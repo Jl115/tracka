@@ -97,4 +97,10 @@ class DatabaseController extends DatabaseRepository {
     final result = await db.query('user');
     return result.isNotEmpty ? result.first['id'].toString() : null;
   }
+
+  Future<String?> getCurrentUserIdByUsername(String username) async {
+    final db = await _dbService.database;
+    final result = await db.query('user', where: 'username = ?', whereArgs: [username]);
+    return result.isNotEmpty ? result.first['id'].toString() : null;
+  }
 }

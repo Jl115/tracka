@@ -25,8 +25,9 @@ abstract class DatabaseRepository {
     }
   }
 
-  Future<int> create({required String table, required Map<String, Object?> data}) async {
-    return await (await db).insert(table, data, conflictAlgorithm: ConflictAlgorithm.abort);
+  Future<int> create({required String table, required Map<String, Object?> value}) async {
+    final db = await this.db;
+    return await db.insert(table, value, conflictAlgorithm: ConflictAlgorithm.abort);
   }
 
   Future<int> update({

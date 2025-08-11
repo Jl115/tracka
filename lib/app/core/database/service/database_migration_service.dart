@@ -25,12 +25,12 @@ class DatabaseMigrationService {
       'id': newUserId,
       'username': 'user',
       'password_hash': '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb',
-      'logged_in': 1,
+      'logged_in': 0,
       'created_at': nowEpoch,
       'updated_at': nowEpoch,
     });
 
-    await db.insert('setting', {'user_id': newUserId, 'dark_mode': 0});
+    await db.insert('setting', {'user_id': newUserId, 'dark_mode': 1});
 
     // Sensor types
     final sensorTypes = [
@@ -58,6 +58,23 @@ class DatabaseMigrationService {
         'updated_at': nowEpoch,
       });
     }
+  }
+
+  Future<void> createTriggers() async {
+    await db.execute('''
+    CREATE TRIGGER IF NOT EXISTS create_default_settings
+    AFTER INSERT ON user
+    BEGIN
+      INSERT INTO setting (
+        user_id,
+        dark_mode
+      )
+      VALUES (
+        NEW.id, 
+        0 -- Default dark_mode off, adjust if needed
+      );
+    END;
+  ''');
   }
 
   Future<void> createTables() async {

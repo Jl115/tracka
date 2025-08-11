@@ -17,6 +17,11 @@ class SettingsLoaded extends SettingsState {
   const SettingsLoaded(this.settings);
 }
 
+class IsLoggedInState extends SettingsState {
+  final bool isLoggedIn;
+  const IsLoggedInState(this.isLoggedIn);
+}
+
 class SettingsFailure extends SettingsState {
   final String message;
   const SettingsFailure(this.message);

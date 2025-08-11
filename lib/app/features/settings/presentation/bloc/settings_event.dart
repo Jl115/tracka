@@ -19,3 +19,8 @@ class UpdateThemeModeEvent extends SettingsEvent {
   final String themeModeName;
   const UpdateThemeModeEvent(this.themeModeName);
 }
+
+class IsLoggedInEvent extends SettingsEvent {
+  final bool isLoggedIn;
+  const IsLoggedInEvent(this.isLoggedIn);
+}

@@ -25,6 +25,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<ToggleDarkModeEvent>(_onToggleDarkMode);
     on<UpdateUsernameEvent>(_onUpdateUsername);
     on<UpdateThemeModeEvent>(_onUpdateThemeMode);
+    on<IsLoggedInEvent>(_onIsLoggedIn);
   }
 
   Future<void> _onLoadSettings(LoadSettingsEvent event, Emitter<SettingsState> emit) async {
@@ -32,9 +33,17 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     try {
       final settings = await loadSettingsUseCase();
       emit(SettingsLoaded(settings));
+      emit(IsLoggedInState(settings.loggedIn));
     } catch (e) {
       emit(SettingsFailure(e.toString()));
     }
+  }
+
+  Future<void> _onIsLoggedIn(IsLoggedInEvent event, Emitter<SettingsState> emit) async {
+    if (state is! SettingsLoaded) return;
+    final current = (state as SettingsLoaded).settings;
+    final isLoggedIn = current.loggedIn;
+    emit(IsLoggedInState(isLoggedIn));
   }
 
   Future<void> _onToggleDarkMode(ToggleDarkModeEvent event, Emitter<SettingsState> emit) async {
